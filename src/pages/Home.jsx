@@ -48,6 +48,7 @@ export default function Home() {
 
   return (
     <section className="hero-sec fade-in-up">
+      <div className="hero-grid-pattern"></div>
       <div className="container hero-layout">
         <div className="hero-text">
           <h1>
@@ -69,6 +70,21 @@ export default function Home() {
           <p>
             I am a passionate Web Developer and Software Engineer. I build modern, elegant web and mobile applications using native and cutting-edge technologies.
           </p>
+
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-number">5+</span>
+              <span className="stat-label">Projects Built</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">8+</span>
+              <span className="stat-label">Tech Stacks</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">CSE</span>
+              <span className="stat-label">BTech Student</span>
+            </div>
+          </div>
 
           <div className="btn-group">
             <Link to="/projects" className="btn btn-primary">View Projects</Link>

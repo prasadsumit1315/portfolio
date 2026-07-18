@@ -39,6 +39,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
@@ -922,4 +929,59 @@ body::after {
   z-index: -1;
   mix-blend-mode: screen;
   transition: all 0.5s ease-out;
+}
+
+/* ========== Hero Tech Grid and Stats ========== */
+.hero-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  z-index: -1;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 45%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 45%, transparent 100%);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 0.8rem 1.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  transition: var(--transition-normal);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  border-color: hsl(var(--primary));
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.1);
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: hsl(var(--text-secondary));
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }

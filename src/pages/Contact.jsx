@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 
+// To receive emails directly at sumitprasad1315@gmail.com:
+// 1. Go to https://formspree.io/ and sign up for a free account.
+// 2. Create a form targeting your email: sumitprasad1315@gmail.com
+// 3. Copy the Form ID (looks like a random string, e.g. "xpzvjreq") and paste it below:
+const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_ID";
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -19,10 +25,9 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Simulate sending state
     setFormStatus({
       message: "Sending your message...",
       type: "sending"
@@ -30,17 +35,59 @@ export default function Contact() {
 
     const name = formData.name.trim() || "there";
 
-    setTimeout(() => {
+    // Fallback if Formspree ID is not yet configured, to guide the user
+    if (!FORMSPREE_FORM_ID || FORMSPREE_FORM_ID === "YOUR_FORMSPREE_ID") {
+      setTimeout(() => {
+        setFormStatus({
+          message: `✉️ (Demo Mode) Thanks ${name}! Setup your Formspree Form ID in 'src/pages/Contact.jsx' to receive real emails.`,
+          type: "success"
+        });
+        setFormData({
+          name: "",
+          email: "",
+          message: ""
+        });
+      }, 1000);
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        })
+      });
+
+      if (response.ok) {
+        setFormStatus({
+          message: `Thanks ${name}! Your message has been sent successfully ✅`,
+          type: "success"
+        });
+        setFormData({
+          name: "",
+          email: "",
+          message: ""
+        });
+      } else {
+        const data = await response.json();
+        setFormStatus({
+          message: data.error || "Oops! There was a problem sending your message. Please try again.",
+          type: "error"
+        });
+      }
+    } catch (error) {
       setFormStatus({
-        message: `Thanks ${name}! Your message has been sent successfully ✅`,
-        type: "success"
+        message: "Connection error. Please check your network and try again.",
+        type: "error"
       });
-      setFormData({
-        name: "",
-        email: "",
-        message: ""
-      });
-    }, 1000);
+    }
   };
 
   return (
