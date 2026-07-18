@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Sumit Prasad</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="header">
+    <nav class="navbar container">
+      <a href="index.html" class="logo">Sumit<span>Prasad</span></a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+
+      <button class="menu-btn" id="menuBtn">☰</button>
+    </nav>
+  </header>
+
+  <!-- Contact Section -->
+  <main class="container contact-sec">
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="section-subtitle">Feel free to drop a message, collaborate on a project, or connect with me via social channels.</p>
+
+    <div class="contact-layout">
+      <!-- Direct Contact Details -->
+      <div class="contact-info-panel">
+        <div class="contact-card">
+          <div class="contact-icon">📧</div>
+          <div class="contact-details">
+            <h4>Email</h4>
+            <p><a href="mailto:sumitprasad@example.com">sumitprasad@example.com</a></p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-details">
+            <h4>GitHub</h4>
+            <p><a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com/sumitprasad</a></p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">💼</div>
+          <div class="contact-details">
+            <h4>LinkedIn</h4>
+            <p><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin.com/in/sumitprasad</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-panel">
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="John Doe" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" placeholder="john@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="6" placeholder="Hi Sumit, I would love to collaborate with you on..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">Send Message</button>
+          <div class="form-status" id="formMsg"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 <span>Sumit Prasad</span> | All Rights Reserved</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
