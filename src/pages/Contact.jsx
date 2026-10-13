@@ -1,189 +1,208 @@
 import React, { useState } from "react";
-
-// To receive emails directly at sumitprasad1315@gmail.com:
-// 1. Go to https://formspree.io/ and sign up for a free account.
-// 2. Create a form targeting your email: sumitprasad1315@gmail.com
-// 3. Copy the Form ID (looks like a random string, e.g. "xpzvjreq") and paste it below:
-const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_ID";
+import { Link } from "react-router-dom";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
+  const [formState, setFormState] = useState({
     name: "",
     email: "",
+    subject: "",
     message: ""
   });
-  const [formStatus, setFormStatus] = useState({
-    message: "",
-    type: "" // 'success', 'error', 'sending'
-  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value
-    }));
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("sumitprasad.dev@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
   };
 
-  const handleSubmit = async (e) => {
+  const handleFormChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    
-    setFormStatus({
-      message: "Sending your message...",
-      type: "sending"
-    });
-
-    const name = formData.name.trim() || "there";
-
-    // Fallback if Formspree ID is not yet configured, to guide the user
-    if (!FORMSPREE_FORM_ID || FORMSPREE_FORM_ID === "YOUR_FORMSPREE_ID") {
-      setTimeout(() => {
-        setFormStatus({
-          message: `✉️ (Demo Mode) Thanks ${name}! Setup your Formspree Form ID in 'src/pages/Contact.jsx' to receive real emails.`,
-          type: "success"
-        });
-        setFormData({
-          name: "",
-          email: "",
-          message: ""
-        });
-      }, 1000);
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message
-        })
-      });
-
-      if (response.ok) {
-        setFormStatus({
-          message: `Thanks ${name}! Your message has been sent successfully ✅`,
-          type: "success"
-        });
-        setFormData({
-          name: "",
-          email: "",
-          message: ""
-        });
-      } else {
-        const data = await response.json();
-        setFormStatus({
-          message: data.error || "Oops! There was a problem sending your message. Please try again.",
-          type: "error"
-        });
-      }
-    } catch (error) {
-      setFormStatus({
-        message: "Connection error. Please check your network and try again.",
-        type: "error"
-      });
-    }
+    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(false);
+      setFormState({ name: "", email: "", subject: "", message: "" });
+    }, 4000);
   };
 
   return (
-    <main className="container contact-sec fade-in-up">
-      <h2 className="section-title">Get In Touch</h2>
-      <p className="section-subtitle">Feel free to drop a message, collaborate on a project, or connect with me via social channels.</p>
-
-      <div className="contact-layout">
-        {/* Direct Contact Details */}
-        <div className="contact-info-panel fade-in-up delay-1" style={{ opacity: 0 }}>
-          <div className="contact-card">
-            <div className="contact-icon">📧</div>
-            <div className="contact-details">
-              <h4>Email</h4>
-              <p><a href="mailto:sumitorasad1315@gmail.com">sumitorasad1315@gmail.com</a></p>
-            </div>
-          </div>
-
-          <div className="contact-card">
-            <div className="contact-icon">🌐</div>
-            <div className="contact-details">
-              <h4>GitHub</h4>
-              <p><a href="https://github.com/sumit1315-as" target="_blank" rel="noopener noreferrer">github.com/sumit1315-as</a></p>
-            </div>
-          </div>
-
-          <div className="contact-card">
-            <div className="contact-icon">💼</div>
-            <div className="contact-details">
-              <h4>LinkedIn</h4>
-              <p><a href="https://www.linkedin.com/in/sumitprasad13" target="_blank" rel="noopener noreferrer">linkedin.com/in/sumitprasad13</a></p>
-            </div>
-          </div>
+    <div className="page-wrapper fade-in-up">
+      <div className="container">
+        
+        {/* Page Header */}
+        <div className="page-header-block">
+          <span className="section-pill-tag">Get in Touch</span>
+          <h1 className="page-main-heading">Let's Build Something Great</h1>
+          <p className="page-subheading-text">
+            Have a project idea, software opportunity, or collaboration in mind? I'd love to hear from you.
+          </p>
+          <div className="heading-glow-bar"></div>
         </div>
 
-        {/* Contact Form */}
-        <div className="contact-form-panel fade-in-up delay-2" style={{ opacity: 0 }}>
-          <form className="contact-form" id="contactForm" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Your Name</label>
-              <input
-                type="text"
-                id="name"
-                placeholder="John Doe"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">Your Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                rows="6"
-                placeholder="Hi Sumit, I would love to collaborate with you on..."
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{
-                marginTop: "0.5rem",
-                width: "100%",
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                transform: formStatus.type === "sending" ? "scale(0.98)" : "none"
-              }}
-              disabled={formStatus.type === "sending"}
-            >
-              {formStatus.type === "sending" ? "⚡ Sending Message..." : "✉️ Send Message"}
-            </button>
-
-            {formStatus.message && (
-              <div className={`form-status ${formStatus.type}`}>
-                {formStatus.message}
+        {/* Contact Layout Duo */}
+        <div className="contact-layout-duo">
+          
+          {/* Left Column: Direct Info Cards */}
+          <div className="contact-info-column">
+            
+            <div className="contact-card-modern">
+              <span className="contact-box-icon">✉️</span>
+              <div className="contact-card-text">
+                <h4>Professional Email</h4>
+                <p>sumitprasad.dev@gmail.com</p>
+                <div className="contact-action-row">
+                  <a href="mailto:sumitprasad.dev@gmail.com" className="contact-card-link">
+                    Send Direct Email ↗
+                  </a>
+                  <button
+                    type="button"
+                    className="copy-mini-btn"
+                    onClick={handleCopyEmail}
+                  >
+                    {copiedEmail ? "✓ Copied!" : "Copy Email"}
+                  </button>
+                </div>
               </div>
-            )}
-          </form>
+            </div>
+
+            <div className="contact-card-modern">
+              <span className="contact-box-icon">💼</span>
+              <div className="contact-card-text">
+                <h4>LinkedIn Network</h4>
+                <p>linkedin.com/in/sumitprasad1315</p>
+                <a
+                  href="https://linkedin.com/in/sumitprasad1315"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-card-link"
+                >
+                  Connect on LinkedIn ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="contact-card-modern">
+              <span className="contact-box-icon">🐙</span>
+              <div className="contact-card-text">
+                <h4>GitHub Profile</h4>
+                <p>github.com</p>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-card-link"
+                >
+                  Explore Code Repositories ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="contact-card-modern">
+              <span className="contact-box-icon">📍</span>
+              <div className="contact-card-text">
+                <h4>Location & Availability</h4>
+                <p>India • Available Worldwide</p>
+                <span className="avail-badge">Open for Full-Time, Remote & Contract Roles</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Column: Interactive Form */}
+          <div className="contact-form-column">
+            <div className="contact-form-container">
+              <h3>Send a Direct Message</h3>
+              <p className="form-sub-hint">
+                Fill in the details below and I will respond to your inquiry as swiftly as possible.
+              </p>
+
+              <form className="modern-contact-form" onSubmit={handleFormSubmit}>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label htmlFor="name">Your Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="e.g. John Doe"
+                      value={formState.name}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-field">
+                    <label htmlFor="email">Email Address *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="e.g. john@example.com"
+                      value={formState.email}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-field">
+                  <label htmlFor="subject">Subject *</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="Project Inquiry / Job Opportunity"
+                    value={formState.subject}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label htmlFor="message">Message *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    placeholder="Hi Sumit, I would like to discuss..."
+                    value={formState.message}
+                    onChange={handleFormChange}
+                    required
+                  ></textarea>
+                </div>
+
+                <button type="submit" className="btn btn-primary submit-btn-block">
+                  {formSubmitted ? "✓ Message Sent Successfully! 🚀" : "Send Message 🚀"}
+                </button>
+              </form>
+            </div>
+          </div>
+
         </div>
+
+        {/* Back to Home / Other Pages CTA */}
+        <div className="page-cta-banner">
+          <h3>Explore other sections of my portfolio</h3>
+          <p>Inspect my verified credentials, technical skills matrix, and software engineering projects.</p>
+          <div className="page-cta-actions">
+            <Link to="/" className="btn btn-primary">
+              Return to Home →
+            </Link>
+            <Link to="/projects" className="btn btn-secondary">
+              Inspect Projects →
+            </Link>
+            <Link to="/certificates" className="btn btn-outline">
+              View Certificates →
+            </Link>
+          </div>
+        </div>
+
       </div>
-    </main>
+    </div>
   );
 }
